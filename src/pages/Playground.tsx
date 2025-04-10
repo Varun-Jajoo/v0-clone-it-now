@@ -1,26 +1,80 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, Send } from "lucide-react";
-import { sendPromptToBackend } from '@/services/apiService';
+import { ArrowRight, Send, Image, X } from "lucide-react";
+import { sendPromptToBackend, sendImageToBackend } from '@/services/apiService';
 import { useToast } from '@/hooks/use-toast';
 
 const Playground = () => {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [responseImage, setResponseImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type and size
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file",
+        description: "Please select an image file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please select an image smaller than 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSelectedImage(file);
+    
+    // Create preview URL
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImagePreview(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearSelectedImage = () => {
+    setSelectedImage(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleGenerate = async () => {
-    if (!prompt.trim()) return;
+    if (!prompt.trim() && !selectedImage) return;
     
     setIsGenerating(true);
     
     try {
-      const result = await sendPromptToBackend(prompt);
+      let result;
+
+      if (selectedImage) {
+        result = await sendImageToBackend(prompt, selectedImage);
+      } else {
+        result = await sendPromptToBackend(prompt);
+      }
+
       setResponse(result.response);
+      setResponseImage(result.image || null);
+      
       toast({
         title: "Response received",
         description: "Successfully generated UI from your description",
@@ -44,17 +98,35 @@ const Playground = () => {
         <div className="w-full md:w-1/2 h-full flex flex-col border-r border-white/10">
           <div className="p-4 border-b border-white/10">
             <h2 className="text-xl font-semibold mb-4">Generate UI from text</h2>
-            <div className="relative">
+            <div className="relative mb-4">
               <Textarea 
                 placeholder="Describe the UI you want to create..."
                 className="min-h-[120px] bg-secondary resize-none"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
               />
+              {/* Image upload button */}
+              <div className="absolute left-2 bottom-2">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageSelect}
+                />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="p-1"
+                >
+                  <Image className="h-4 w-4" />
+                </Button>
+              </div>
               <Button 
                 className="absolute right-2 bottom-2"
                 size="sm"
-                disabled={isGenerating || !prompt.trim()}
+                disabled={isGenerating || (!prompt.trim() && !selectedImage)}
                 onClick={handleGenerate}
               >
                 {isGenerating ? (
@@ -69,12 +141,42 @@ const Playground = () => {
                 )}
               </Button>
             </div>
+
+            {/* Image Preview */}
+            {imagePreview && (
+              <div className="relative mb-4 w-full">
+                <div className="relative rounded-md overflow-hidden w-full h-40 bg-secondary/50">
+                  <img 
+                    src={imagePreview} 
+                    alt="Selected" 
+                    className="w-full h-full object-contain" 
+                  />
+                  <Button 
+                    variant="destructive" 
+                    size="sm" 
+                    className="absolute top-2 right-2 p-1 h-7 w-7"
+                    onClick={clearSelectedImage}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="flex-1 overflow-auto p-4">
             {response ? (
               <Card className="p-4 bg-muted">
                 <p className="text-sm">{response}</p>
+                {responseImage && (
+                  <div className="mt-4">
+                    <img 
+                      src={responseImage} 
+                      alt="Generated" 
+                      className="rounded-md w-full object-contain max-h-80" 
+                    />
+                  </div>
+                )}
               </Card>
             ) : (
               <div className="h-full flex items-center justify-center text-muted-foreground">
