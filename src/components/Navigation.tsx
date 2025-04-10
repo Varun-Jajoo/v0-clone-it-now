@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 const Navigation = () => {
   return (
@@ -40,7 +41,7 @@ const Navigation = () => {
             Sign In
           </Button>
           <Button className="bg-primary hover:bg-primary/90">
-            Get Started
+            <Link to="/playground">Generate</Link>
           </Button>
         </div>
       </div>

@@ -1,55 +1,48 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, SparkleIcon } from 'lucide-react';
-import { Input } from "@/components/ui/input";
+import { ChevronRight } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
+  
   return (
-    <section className="relative pt-28 pb-20 overflow-hidden">
-      {/* Spotlight effect */}
-      <div className="pointer-events-none absolute inset-0 h-full bg-gradient-to-b from-transparent to-transparent via-purple-500/5" />
-      <div 
-        className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-primary/5 animate-spotlight opacity-0"
-        style={{ 
-          background: "radial-gradient(600px circle at center, rgba(139, 92, 246, 0.15), transparent 40%)"
-        }} 
-      />
+    <div className="relative overflow-hidden pt-32 pb-24 px-4 md:px-6 lg:pt-40 lg:pb-32">
+      <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent opacity-50"></div>
       
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center text-center space-y-10">
-          <div className="space-y-6 max-w-3xl">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-gradient glow">
-              Generate UI from text in seconds
-            </h1>
-            <p className="text-muted-foreground text-lg md:text-xl max-w-[700px] mx-auto">
-              Create beautiful UI components, websites, and applications with AI in seconds. Just describe what you want.
-            </p>
-          </div>
-          
-          <div className="w-full max-w-md mx-auto relative">
-            <div className="relative flex items-center">
-              <SparkleIcon className="absolute left-3 h-5 w-5 text-muted-foreground" />
-              <Input
-                className="pl-10 pr-24 py-6 bg-secondary border-white/10 text-white rounded-full"
-                placeholder="Describe your design..."
-              />
-              <Button className="absolute right-1 rounded-full" size="sm">
-                Generate <ArrowRight className="ml-1 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-          
-          <div className="flex flex-wrap justify-center gap-2 text-sm text-muted-foreground">
-            <span className="px-2 py-1 bg-muted rounded-full">Landing page</span>
-            <span className="px-2 py-1 bg-muted rounded-full">Dashboard</span>
-            <span className="px-2 py-1 bg-muted rounded-full">Contact form</span>
-            <span className="px-2 py-1 bg-muted rounded-full">Product card</span>
-            <span className="px-2 py-1 bg-muted rounded-full">Hero section</span>
-          </div>
+      <div className="max-w-3xl mx-auto text-center relative z-10">
+        <div className="mb-6">
+          <span className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-sm font-medium bg-muted text-muted-foreground">
+            <span className="flex h-2 w-2 rounded-full bg-primary"></span> Now in public beta
+          </span>
+        </div>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+          Generate <span className="text-gradient glow">UI</span> from text
+          <br />in seconds
+        </h1>
+        <p className="text-lg md:text-xl text-muted-foreground mb-10">
+          Create beautiful UI components, websites, and applications with AI in seconds.
+          <br className="hidden md:block" />
+          Just describe what you want.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button 
+            size="lg" 
+            className="gap-2 text-base h-12"
+            onClick={() => navigate('/playground')}
+          >
+            Start generating
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+          <Button size="lg" variant="outline" className="text-base h-12">
+            View examples
+          </Button>
         </div>
       </div>
-    </section>
+      
+      <div className="absolute bottom-[-15%] left-1/2 transform -translate-x-1/2 w-3/4 h-48 bg-primary/20 blur-3xl rounded-full"></div>
+    </div>
   );
 };
 
