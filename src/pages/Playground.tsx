@@ -3,8 +3,14 @@ import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, Send, Image, X } from "lucide-react";
-import { sendPromptToBackend, sendImageToBackend } from '@/services/apiService';
+import { ArrowRight, Send, Image, X, Upload, Github, FileCode, Globe, Link } from "lucide-react";
+import { 
+  sendPromptToBackend, 
+  sendImageToBackend, 
+  publishProject,
+  createGitHubRepository,
+  getProjectFiles
+} from '@/services/apiService';
 import { useToast } from '@/hooks/use-toast';
 
 const Playground = () => {
@@ -14,6 +20,12 @@ const Playground = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [responseImage, setResponseImage] = useState<string | null>(null);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [publishedUrl, setPublishedUrl] = useState<string | null>(null);
+  const [isCreatingRepo, setIsCreatingRepo] = useState(false);
+  const [repoUrl, setRepoUrl] = useState<string | null>(null);
+  const [isViewingFiles, setIsViewingFiles] = useState(false);
+  const [projectFiles, setProjectFiles] = useState<{name: string, path: string, content: string}[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -88,6 +100,97 @@ const Playground = () => {
       });
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handlePublish = async () => {
+    // Demo project ID and subdomain
+    const projectId = "demo-project-123";
+    const subdomain = "my-awesome-project";
+    
+    setIsPublishing(true);
+    
+    try {
+      const result = await publishProject(projectId, subdomain);
+      
+      if (result.status === 'success') {
+        setPublishedUrl(result.url);
+        toast({
+          title: "Published successfully",
+          description: `Your project is live at ${result.url}`,
+        });
+      } else {
+        toast({
+          title: "Publishing failed",
+          description: result.message || "Failed to publish your project",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Failed to publish:', error);
+      toast({
+        title: "Error",
+        description: "Failed to publish your project",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPublishing(false);
+    }
+  };
+
+  const handleCreateRepo = async () => {
+    // Demo project ID and repo name
+    const projectId = "demo-project-123";
+    const repoName = "my-awesome-ui-project";
+    
+    setIsCreatingRepo(true);
+    
+    try {
+      const result = await createGitHubRepository(projectId, repoName, true);
+      
+      if (result.status === 'success') {
+        setRepoUrl(result.repoUrl);
+        toast({
+          title: "Repository created",
+          description: `Your GitHub repository is ready at ${result.repoUrl}`,
+        });
+      } else {
+        toast({
+          title: "Repository creation failed",
+          description: result.message || "Failed to create GitHub repository",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Failed to create repository:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create GitHub repository",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCreatingRepo(false);
+    }
+  };
+
+  const handleViewFiles = async () => {
+    // Demo project ID
+    const projectId = "demo-project-123";
+    
+    setIsViewingFiles(true);
+    
+    try {
+      const result = await getProjectFiles(projectId);
+      setProjectFiles(result.files);
+    } catch (error) {
+      console.error('Failed to fetch files:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch project files",
+        variant: "destructive",
+      });
+    } finally {
+      setIsViewingFiles(false);
     }
   };
 
@@ -186,26 +289,96 @@ const Playground = () => {
           </div>
         </div>
         
-        {/* Right side - Editor Preview */}
+        {/* Right side - Editor Preview with new features */}
         <div className="w-full md:w-1/2 h-full bg-black/30">
           {response ? (
             <div className="h-full flex flex-col">
               <div className="border-b border-white/10 p-3 flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <span className="bg-primary/20 text-primary text-xs px-2 py-1 rounded">Preview</span>
-                  <span className="bg-secondary text-xs px-2 py-1 rounded">Code</span>
+                  <span className="bg-secondary text-xs px-2 py-1 rounded cursor-pointer" onClick={handleViewFiles}>Code</span>
                 </div>
-                <div>
-                  <Button variant="outline" size="sm">Export</Button>
+                <div className="flex items-center gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex items-center gap-2" 
+                    onClick={handlePublish}
+                    disabled={isPublishing}
+                  >
+                    {isPublishing ? (
+                      <span className="h-3 w-3 rounded-full border-2 border-t-transparent border-white animate-spin"></span>
+                    ) : (
+                      <Upload className="h-3 w-3" />
+                    )}
+                    Publish
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="flex items-center gap-2"
+                    onClick={handleCreateRepo}
+                    disabled={isCreatingRepo}
+                  >
+                    {isCreatingRepo ? (
+                      <span className="h-3 w-3 rounded-full border-2 border-t-transparent border-white animate-spin"></span>
+                    ) : (
+                      <Github className="h-3 w-3" />
+                    )}
+                    GitHub
+                  </Button>
                 </div>
               </div>
+              
               <div className="flex-1 p-4 overflow-auto">
-                <div className="bg-muted rounded-lg h-full flex items-center justify-center">
-                  <div className="text-center">
-                    <p className="text-lg font-semibold mb-2">UI Preview</p>
-                    <p className="text-muted-foreground text-sm">Your generated UI would appear here</p>
+                {isViewingFiles ? (
+                  <div className="bg-muted rounded-lg h-full p-4 overflow-auto">
+                    <div className="mb-4 flex items-center">
+                      <FileCode className="h-5 w-5 mr-2" />
+                      <h3 className="font-medium">Project Files</h3>
+                    </div>
+                    
+                    {projectFiles.length > 0 ? (
+                      <div className="space-y-2">
+                        {projectFiles.map((file, index) => (
+                          <div key={index} className="p-2 bg-secondary/30 rounded hover:bg-secondary/50 cursor-pointer">
+                            <p className="text-sm font-mono">{file.path}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">No files to display</p>
+                    )}
                   </div>
-                </div>
+                ) : publishedUrl ? (
+                  <div className="bg-muted rounded-lg h-full p-4 flex flex-col">
+                    <div className="mb-4 flex items-center">
+                      <Globe className="h-5 w-5 mr-2" />
+                      <h3 className="font-medium">Deployed Project</h3>
+                    </div>
+                    <div className="p-3 bg-secondary/30 rounded flex items-center justify-between">
+                      <span className="text-sm font-mono truncate">{publishedUrl}</span>
+                      <Button size="sm" variant="ghost" className="ml-2 p-1 h-7 w-7">
+                        <Link className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <div className="text-center">
+                        <p className="text-muted-foreground text-sm mb-2">Your project is now live!</p>
+                        <Button size="sm" variant="outline" onClick={() => window.open(publishedUrl, '_blank')}>
+                          Visit Site
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-muted rounded-lg h-full flex items-center justify-center">
+                    <div className="text-center">
+                      <p className="text-lg font-semibold mb-2">UI Preview</p>
+                      <p className="text-muted-foreground text-sm">Your generated UI would appear here</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
