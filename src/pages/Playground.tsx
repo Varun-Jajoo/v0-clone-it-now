@@ -4,22 +4,37 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Send } from "lucide-react";
+import { sendPromptToBackend } from '@/services/apiService';
+import { useToast } from '@/hooks/use-toast';
 
 const Playground = () => {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const { toast } = useToast();
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!prompt.trim()) return;
     
     setIsGenerating(true);
     
-    // Simulate API call with timeout
-    setTimeout(() => {
-      setResponse("Here's your generated UI based on your description. I've created a responsive layout with the main components you requested. You can edit the code on the right side or adjust your prompt for different results.");
+    try {
+      const result = await sendPromptToBackend(prompt);
+      setResponse(result.response);
+      toast({
+        title: "Response received",
+        description: "Successfully generated UI from your description",
+      });
+    } catch (error) {
+      console.error('Failed to get response:', error);
+      toast({
+        title: "Error",
+        description: "Failed to communicate with the backend server",
+        variant: "destructive",
+      });
+    } finally {
       setIsGenerating(false);
-    }, 1500);
+    }
   };
 
   return (
