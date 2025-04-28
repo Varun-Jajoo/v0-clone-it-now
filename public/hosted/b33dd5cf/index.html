@@ -1,0 +1,435 @@
+
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <script src="https://cdn.tailwindcss.com"></script>
+              <style>
+                body { font-family: sans; }
+              </style>
+            </head>
+            <body class="bg-white"><!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body { font-family: sans; }
+    </style>
+  </head>
+  <body class="bg-white">
+    <div class="bg-slate-50 text-slate-800">
+      <nav class="bg-emerald-700 p-4 text-white">
+        <div class="container mx-auto px-4">
+          <div class="flex items-center justify-between">
+            <div class="text-xl font-bold">Travel App</div>
+            <div class="space-x-4">
+              <a href="#" class="hover:text-emerald-200">Destinations</a>
+              <a href="#" class="hover:text-emerald-200">Flights</a>
+              <a href="#" class="hover:text-emerald-200">Hotels</a>
+              <a href="#" class="hover:text-emerald-200">Blog</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="container mx-auto py-12 px-4">
+        <section class="mb-20">
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 class="text-4xl font-bold mb-4 text-emerald-700">
+                Discover Your Next Adventure
+              </h2>
+              <p class="text-lg text-slate-600">
+                Explore curated destinations, find amazing flights and
+                accommodations, and book unforgettable experiences.
+              </p>
+              <button
+                class="mt-6 bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl transition-colors duration-300"
+              >
+                Start Exploring
+              </button>
+            </div>
+            <img
+              src="https://placehold.co/600x400?text=Hero+Image"
+              alt="Hero"
+              class="rounded-xl shadow-lg"
+            />
+          </div>
+        </section>
+
+        <section class="mb-20">
+          <h2 class="text-3xl font-semibold mb-6 text-emerald-700 text-center">
+            Featured Destinations
+          </h2>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=Paris"
+                alt="Paris"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Paris, France
+                </h3>
+                <p class="text-slate-600">
+                  The City of Lights awaits. Experience romance, art, and
+                  exquisite cuisine.
+                </p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=Tokyo"
+                alt="Tokyo"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Tokyo, Japan
+                </h3>
+                <p class="text-slate-600">
+                  Explore the vibrant culture, futuristic technology, and serene
+                  gardens of Tokyo.
+                </p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=Machu+Picchu"
+                alt="Machu Picchu"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Machu Picchu, Peru
+                </h3>
+                <p class="text-slate-600">
+                  Discover the ancient Incan citadel nestled high in the Andes
+                  Mountains.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-20">
+          <div
+            class="bg-gradient-to-br from-emerald-100 to-slate-100 rounded-xl shadow-lg p-8"
+          >
+            <h2 class="text-3xl font-semibold mb-6 text-emerald-700 text-center">
+              Find Flights
+            </h2>
+            <div class="grid md:grid-cols-3 gap-4">
+              <div>
+                <label
+                  htmlFor="origin"
+                  class="block text-slate-700 text-sm font-bold mb-2"
+                  >Origin</label
+                >
+                <input
+                  type="text"
+                  id="origin"
+                  placeholder="City or Airport"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="destination"
+                  class="block text-slate-700 text-sm font-bold mb-2"
+                  >Destination</label
+                >
+                <input
+                  type="text"
+                  id="destination"
+                  placeholder="City or Airport"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="dates"
+                  class="block text-slate-700 text-sm font-bold mb-2"
+                  >Dates</label
+                >
+                <input
+                  type="date"
+                  id="dates"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+            </div>
+            <button
+              class="mt-6 bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl transition-colors duration-300 block mx-auto"
+            >
+              Search Flights
+            </button>
+          </div>
+        </section>
+
+        <section class="mb-20">
+          <h2 class="text-3xl font-semibold mb-6 text-emerald-700 text-center">
+            Accommodation
+          </h2>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=Hotel+Room"
+                alt="Hotel Room"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Luxury Hotel
+                </h3>
+                <p class="text-slate-600">
+                  Enjoy a luxurious stay with premium amenities.
+                </p>
+                <p class="text-emerald-600 font-semibold">$200/night</p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=Cozy+Hostel"
+                alt="Cozy Hostel"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Cozy Hostel
+                </h3>
+                <p class="text-slate-600">
+                  Budget-friendly accommodation with a social atmosphere.
+                </p>
+                <p class="text-emerald-600 font-semibold">$50/night</p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=Vacation+Rental"
+                alt="Vacation Rental"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Vacation Rental
+                </h3>
+                <p class="text-slate-600">
+                  Experience home-like comfort in a private rental.
+                </p>
+                <p class="text-emerald-600 font-semibold">$150/night</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-20">
+          <h2 class="text-3xl font-semibold mb-6 text-emerald-700 text-center">
+            Things To Do
+          </h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=City+Tour"
+                alt="City Tour"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Guided City Tour
+                </h3>
+                <p class="text-slate-600">
+                  Explore the city's highlights with an expert guide.
+                </p>
+                <p class="text-emerald-600 font-semibold">$80</p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=Cooking+Class"
+                alt="Cooking Class"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Local Cooking Class
+                </h3>
+                <p class="text-slate-600">
+                  Learn to prepare traditional dishes with local chefs.
+                </p>
+                <p class="text-emerald-600 font-semibold">$100</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-20">
+          <div
+            class="bg-gradient-to-r from-emerald-50 to-slate-50 rounded-xl shadow-lg p-8"
+          >
+            <h2 class="text-3xl font-semibold mb-6 text-emerald-700 text-center">
+              Travel Blog
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+              <div
+                class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              >
+                <img
+                  src="https://placehold.co/300x200?text=Travel+Tips"
+                  alt="Travel Tips"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="p-4">
+                  <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                    Top 10 Travel Tips
+                  </h3>
+                  <p class="text-slate-600">
+                    Essential tips for a smooth and enjoyable travel
+                    experience.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              >
+                <img
+                  src="https://placehold.co/300x200?text=Food+Guide"
+                  alt="Food Guide"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="p-4">
+                  <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                    A Foodie's Guide to Italy
+                  </h3>
+                  <p class="text-slate-600">
+                    Discover the best culinary experiences in Italy.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              >
+                <img
+                  src="https://placehold.co/300x200?text=Solo+Travel"
+                  alt="Solo Travel"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="p-4">
+                  <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                    Solo Travel Adventures
+                  </h3>
+                  <p class="text-slate-600">
+                    Tips and inspiration for traveling solo.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-20">
+          <h2 class="text-3xl font-semibold mb-6 text-emerald-700 text-center">
+            Deals & Offers
+          </h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=Flight+Deal"
+                alt="Flight Deal"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Flight to Europe - 20% Off
+                </h3>
+                <p class="text-slate-600">
+                  Limited time offer on flights to select European cities.
+                </p>
+                <p class="text-emerald-600 font-semibold">Book Now!</p>
+              </div>
+            </div>
+            <div
+              class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src="https://placehold.co/300x200?text=Hotel+Discount"
+                alt="Hotel Discount"
+                class="w-full h-48 object-cover"
+              />
+              <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Hotel Stay - 15% Discount
+                </h3>
+                <p class="text-slate-600">
+                  Save on your hotel stay with this exclusive discount.
+                </p>
+                <p class="text-emerald-600 font-semibold">Book Now!</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-20">
+          <div class="bg-slate-100 rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-semibold mb-6 text-emerald-700 text-center">
+              Travel Resources
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+              <div>
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Currency Converter
+                </h3>
+                <p class="text-slate-600">
+                  Convert currencies for your trip planning.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold mb-2 text-slate-800">
+                  Visa Information
+                </h3>
+                <p class="text-slate-600">
+                  Find visa requirements for your destination.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-semibold mb-6 text-emerald-700 text-center">
+              Join Our Community
+            </h2>
+            <p class="text-slate-600 text-center">
+              Share your travel experiences and connect with other travelers.
+            </p>
+            <button
+              class="mt-6 bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl transition-colors duration-300 block mx-auto"
+            >
+              Sign Up
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html></body>
+          </html>
+        

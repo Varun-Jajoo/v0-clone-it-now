@@ -1,11 +1,14 @@
 import re
-from flask import Flask, request, jsonify
-from flask_cors import CORS  # Import CORS
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS, cross_origin
 from PIL import Image
 import io
 import google.generativeai as genai2
 from google import genai
 import os
+from datetime import datetime
+import json
+
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
@@ -32,7 +35,7 @@ def analyze_image():
         clean_code = re.sub(r"```jsx|```", "", generated_code).strip()
 
         # Save to a separate file
-        with open("C:/Users/himan/OneDrive/Desktop/mpr-final/src/components/ok.jsx", "w", encoding="utf-8") as f:
+        with open("C:/Users/himan/OneDrive/Desktop/v0-clone-it-now/src/components/ok.tsx", "w", encoding="utf-8") as f:
             f.write(clean_code)
 
         return jsonify({"description": clean_code})
@@ -55,7 +58,7 @@ def sketch():
         clean_code = re.sub(r"```jsx|```", "", generated_code).strip()
 
         # Save to a separate file
-        with open("C:/Users/himan/OneDrive/Desktop/mpr-final/src/components/ok2.jsx", "w", encoding="utf-8") as f:
+        with open("C:/Users/himan/OneDrive/Desktop/v0-clone-it-now/src/components/Ok3.tsx", "w", encoding="utf-8") as f:
             f.write(clean_code)
 
         return jsonify({"description": clean_code})
@@ -461,12 +464,32 @@ def plan_website():
 
 
 MODERN_PROMPT = '''
-Generate a set of modern, sleek React components using Tailwind CSS. Follow these instructions exactly and override Tailwind's defaults with a custom palette based on {colors}.
+Generate a set of modern, sleek React components using Tailwind CSS. Follow these instructions exactly and override Tailwind's defaults with a custom palette based on {colors} NO COMMENTS FOR ANYTHING.
 
+Design Principles:
+1. Layout Architecture:
+- Use fluid grid systems with Tailwind's grid/flex combined with negative space (gap-8+)
+- Implement layered compositions with backdrop-blur overlays and subtle gradients
+- Create visual flow using asymmetric spacing and container queries
+- Apply "isolate" and "contain-paint" for performance optimization
+
+2. Section Design:
+- Alternate between full-bleed sections and contained layouts
+- Use dynamic background treatments (subtle radial gradients, animated grain textures)
+- Separate sections with SVG dividers or ::after pseudo-elements with gradient borders
+- Implement scroll-linked opacity/transform effects for depth
+
+3. Component Philosophy:
+- Build around content-first layouts with smart whitespace
+- Create visual hierarchy through typography scale (text-4xl→text-lg)
+- Use motion-safe transitions (hover:scale-102 active:scale-98)
+- Apply "group/item" patterns for interactive elements
+- Implement modern loading states with skeleton UI
 
 Specific Elements:
 - No comments displaying the start of the component 
 - use color for texts too 
+- use tailwind grid for better arrangements
 - the whole website should have a background color please ensure 
 - The sections must be displayed nicely and should have a differentiable gap.
 - Implement a fully responsive layout using Tailwind's responsive classes.
@@ -518,6 +541,167 @@ def generate():
             "prompt": full_prompt
         })
     except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/modify", methods=["POST"])
+def modify_website():
+    data = request.get_json()
+    existing_html = data.get("html", "")
+    prompt = data.get("prompt", "")
+    requirements = data.get("requirements", {})
+
+    if not existing_html or not prompt:
+        return jsonify({"error": "Both HTML and prompt are required"}), 400
+
+    try:
+        # Generate modifications based on existing HTML and new requirements
+        response = model.generate_content([
+            f"""Modify the following HTML code according to this prompt: {prompt}
+            Keep the same structure and styling approach, but update the content and components as requested.
+            Return only the modified HTML code, no explanations or markdown.
+            
+            Existing HTML:
+            {existing_html}
+            """
+        ])
+        
+        generated_code = response.text.strip()
+        # Remove markdown-style code blocks if present
+        clean_code = re.sub(r"```(html|jsx)?|```", "", generated_code).strip()
+        
+        return jsonify({"html": clean_code})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/publish", methods=["POST"])
+def publish_website():
+    data = request.get_json()
+    html = data.get("html")
+
+    if not html:
+        return jsonify({"error": "HTML content is required"}), 400
+
+    # Generate a unique identifier for the website
+    import uuid
+    site_id = str(uuid.uuid4())[:8]
+    
+    # Create directory for the website
+    site_dir = os.path.join("C:/Users/himan/OneDrive/Desktop/v0-clone-it-now/public/hosted", site_id)
+    os.makedirs(site_dir, exist_ok=True)
+
+    # Save the HTML content
+    try:
+        with open(os.path.join(site_dir, "index.html"), "w", encoding="utf-8") as f:
+            f.write(html)
+        
+        # Return the dynamic URL
+        url = f"http://localhost:5000/hosted/{site_id}/index.html"
+        return jsonify({"url": url})
+    except Exception as e:
+        return jsonify({"error": f"Failed to publish website: {str(e)}"}), 500
+
+# Initialize stats storage
+STATS_DIR = "C:/Users/himan/OneDrive/Desktop/v0-clone-it-now/public/hosted/stats"
+os.makedirs(STATS_DIR, exist_ok=True)
+
+def get_site_stats(site_id):
+    stats_file = os.path.join(STATS_DIR, f"{site_id}.json")
+    if os.path.exists(stats_file):
+        with open(stats_file, "r") as f:
+            stats = json.load(f)
+            # Convert the unique_visitors back to a list if it exists
+            if "unique_visitors" in stats:
+                stats["unique_visitors"] = list(set(stats["unique_visitors"]))
+            return stats
+    return {
+        "views": 0,
+        "unique_visitors": [],
+        "page_views": {},
+        "browsers": {},
+        "devices": {},
+        "countries": {},
+        "referrers": {},
+        "bounce_rate": 0,
+        "avg_time": 0,
+        "last_updated": datetime.now().isoformat()
+    }
+
+def update_site_stats(site_id, request):
+    stats = get_site_stats(site_id)
+    
+    # Update basic metrics
+    stats["views"] += 1
+    
+    # Track unique visitors using IP
+    visitor_ip = request.remote_addr
+    if visitor_ip not in stats["unique_visitors"]:
+        stats["unique_visitors"].append(visitor_ip)
+    
+    # Update browser and device info
+    user_agent = request.headers.get("User-Agent", "Unknown")
+    browser = "Chrome" if "Chrome" in user_agent else "Firefox" if "Firefox" in user_agent else "Other"
+    device = "Mobile" if "Mobile" in user_agent else "Desktop"
+    
+    stats["browsers"][browser] = stats["browsers"].get(browser, 0) + 1
+    stats["devices"][device] = stats["devices"].get(device, 0) + 1
+    
+    # Update referrer
+    referrer = request.headers.get("Referer", "direct")
+    stats["referrers"][referrer] = stats["referrers"].get(referrer, 0) + 1
+    
+    # Save stats
+    stats_file = os.path.join(STATS_DIR, f"{site_id}.json")
+    with open(stats_file, "w") as f:
+        # Convert set to list before serializing
+        json.dump(stats, f)
+    
+    return stats
+
+@app.route('/hosted/<site_id>/stats', methods=['GET'])
+@cross_origin()
+def get_stats(site_id):
+    stats = get_site_stats(site_id)
+    # Convert any sets to lists to ensure JSON serialization works
+    if isinstance(stats.get('unique_visitors'), set):
+        stats['unique_visitors'] = list(stats['unique_visitors'])
+    # Convert any other potential sets in nested dictionaries
+    for key, value in stats.items():
+        if isinstance(value, dict):
+            for subkey, subvalue in value.items():
+                if isinstance(subvalue, set):
+                    stats[key][subkey] = list(subvalue)
+    return jsonify(stats)
+
+@app.route("/hosted/<site_id>/track", methods=["POST"])
+def track_stats(site_id):
+    stats = update_site_stats(site_id, request)
+    return jsonify({"success": True, "stats": stats})
+
+# Modify the existing serve_hosted_file route to track stats
+@app.route('/hosted/<path:filename>')
+def serve_hosted_file(filename):
+    # Extract site_id from the path
+    site_id = filename.split('/')[0]
+    
+    # Update stats before serving the file
+    update_site_stats(site_id, request)
+    
+    return send_from_directory('C:/Users/himan/OneDrive/Desktop/v0-clone-it-now/public/hosted', filename)
+
+@app.route('/hosted-sites', methods=['GET'])
+@cross_origin()
+def get_hosted_sites():
+    hosted_dir = "C:/Users/himan/OneDrive/Desktop/v0-clone-it-now/public/hosted"
+    # Get all subdirectories in the hosted directory that have an index.html file
+    sites = []
+    try:
+        for site_id in os.listdir(hosted_dir):
+            if os.path.isdir(os.path.join(hosted_dir, site_id)) and site_id != 'stats':
+                if os.path.exists(os.path.join(hosted_dir, site_id, 'index.html')):
+                    sites.append(site_id)
+        return jsonify(sites)
+    except Exception as e:
+        print(f"Error in get_hosted_sites: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":

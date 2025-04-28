@@ -1,0 +1,268 @@
+
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <script src="https://cdn.tailwindcss.com"></script>
+              <style>
+                body { font-family: sans; }
+              </style>
+            </head>
+            <body class="bg-white"><!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body { font-family: sans; }
+
+      .parallax {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .parallax-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        transform: translateZ(-1px) scale(2); /* Adjust scale for parallax effect */
+      }
+
+      .carousel-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      .carousel-slide {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .carousel-item {
+        flex: 0 0 100%; /* Each item takes up 100% of the container width */
+        box-sizing: border-box; /* Include padding and border in the element's total width and height */
+      }
+
+      .carousel-buttons {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+      }
+
+      .carousel-button {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body class="bg-white"><div class="bg-orange-100 font-sans antialiased min-h-screen">
+    <header class="bg-white shadow-md py-4">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between">
+          <a href="/" class="text-2xl font-bold text-orange-600">
+            Study Abroad Guide
+          </a>
+          <nav>
+            <ul class="flex space-x-6">
+              <li><a href="/" class="text-slate-700 hover:text-orange-600">Home</a></li>
+              <li><a href="/countries" class="text-slate-700 hover:text-orange-600">Countries</a></li>
+              <li><a href="/application" class="text-slate-700 hover:text-orange-600">Application</a></li>
+              <li><a href="/contact" class="text-slate-700 hover:text-orange-600">Contact</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <section class="py-20 parallax">
+      <img src="https://avanse.com/blogs/images/Planning-to-study-abroad.jpg" alt="Background Image" class="parallax-background">
+      <div class="container mx-auto px-4 text-center relative">
+        <h1 class="text-5xl font-extrabold text-white mb-6">
+          Unlock Global Opportunities
+        </h1>
+        <p class="text-xl text-white mb-8">
+          Your guide to studying abroad. Discover new cultures and enhance your career.
+        </p>
+        <a href="/countries" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-200">
+          Explore Countries
+        </a>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-semibold text-orange-700 text-center mb-12">Popular Destinations</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-200">
+            <img src="https://avanse.com/blogs/images/Planning-to-study-abroad.jpg" alt="Study in Canada" class="rounded-t-xl object-cover h-48 w-full" />
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-slate-700 mb-2">Study in Canada</h3>
+              <p class="text-slate-500 mb-4">Discover top universities and vibrant cities in Canada.</p>
+              <a href="/country/canada" class="text-orange-600 hover:text-orange-700 font-semibold">Learn More</a>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-200">
+            <img src="https://avanse.com/blogs/images/Planning-to-study-abroad.jpg" alt="Study in UK" class="rounded-t-xl object-cover h-48 w-full" />
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-slate-700 mb-2">Study in the UK</h3>
+              <p class="text-slate-500 mb-4">Explore world-renowned institutions and rich history in the UK.</p>
+              <a href="/country/uk" class="text-orange-600 hover:text-orange-700 font-semibold">Explore Now</a>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-200">
+            <img src="https://avanse.com/blogs/images/Planning-to-study-abroad.jpg" alt="Study in Australia" class="rounded-t-xl object-cover h-48 w-full" />
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-slate-700 mb-2">Study in Australia</h3>
+              <p class="text-slate-500 mb-4">Experience a unique lifestyle and excellent education system in Australia.</p>
+              <a href="/country/australia" class="text-orange-600 hover:text-orange-700 font-semibold">Begin Learning</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+     <section class="py-16 bg-gray-100">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-semibold text-orange-700 text-center mb-8">Student Experiences</h2>
+
+        <div class="carousel-container">
+            <div class="carousel-slide" id="carousel-slide">
+                <div class="carousel-item p-4">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <p class="text-slate-600 italic mb-4">"Studying abroad changed my life! I gained so much independence and made lifelong friends."</p>
+                        <p class="text-orange-600 font-semibold">- Jane Doe, Canada</p>
+                    </div>
+                </div>
+                <div class="carousel-item p-4">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <p class="text-slate-600 italic mb-4">"The UK has a lot of history and culture, and I love being exposed to a new academic system."</p>
+                        <p class="text-orange-600 font-semibold">- Kwame Nkrumah, UK</p>
+                    </div>
+                </div>
+                <div class="carousel-item p-4">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <p class="text-slate-600 italic mb-4">"Australia's weather is really nice and the school system is very supportive. I would recommend!"</p>
+                        <p class="text-orange-600 font-semibold">- Brad Pitt, Australia</p>
+                    </div>
+                </div>
+                    <div class="carousel-item p-4">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <p class="text-slate-600 italic mb-4">"Australia's weather is really nice and the school system is very supportive. I would recommend!"</p>
+                        <p class="text-orange-600 font-semibold">- Brad Pitt, Australia</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-buttons">
+                <button class="carousel-button" onclick="prevSlide()">Previous</button>
+                <button class="carousel-button" onclick="nextSlide()">Next</button>
+            </div>
+        </div>
+            </div>
+        </section>
+
+    <section class="py-16 bg-amber-50">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-3xl font-semibold text-orange-700 mb-6">
+              About Us
+            </h2>
+            <p class="text-slate-600 mb-4">
+              We are committed to helping students achieve their dreams of studying abroad. Our resources provide guidance on every step of the process.
+            </p>
+            <p class="text-slate-600">
+              From choosing the right program to navigating visa requirements, we're here to support you.
+            </p>
+          </div>
+          <div>
+            <img src="https://avanse.com/blogs/images/Planning-to-study-abroad.jpg" alt="About Us" class="rounded-xl shadow-lg object-cover h-96 w-full" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 bg-gradient-to-r from-amber-100 to-orange-50">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-semibold text-orange-700 mb-8">
+          Stay Updated on Study Abroad Opportunities
+        </h2>
+        <p class="text-xl text-slate-600 mb-8">
+          Get the latest information and expert advice delivered to your inbox.
+        </p>
+        <form class="max-w-md mx-auto">
+          <div class="flex flex-col md:flex-row">
+            <input type="email" placeholder="Enter your email address" class="shadow-sm py-3 px-4 rounded-l-full focus:outline-none text-slate-700 flex-grow" />
+            <button class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-r-full shadow-lg transition duration-200">Subscribe</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer class="bg-slate-800 py-8">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between">
+          <p class="text-slate-300">&copy; 2024 Study Abroad Guide. All rights reserved.</p>
+          <nav>
+            <ul class="flex space-x-6">
+              <li><a href="/privacy" class="text-slate-300 hover:text-orange-400">Privacy Policy</a></li>
+              <li><a href="/terms" class="text-slate-300 hover:text-orange-400">Terms of Service</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+      const carouselSlide = document.getElementById('carousel-slide');
+      const carouselItems = document.querySelectorAll('.carousel-item');
+      let counter = 0;
+      const size = carouselItems[0].offsetWidth;
+
+      carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+
+      function nextSlide() {
+          if (counter >= carouselItems.length - 1) return;
+          carouselSlide.style.transition = "transform 0.4s ease-in-out";
+          counter++;
+          carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+      }
+
+      function prevSlide() {
+          if (counter <= 0) return;
+          carouselSlide.style.transition = "transform 0.4s ease-in-out";
+          counter--;
+          carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+      }
+
+      carouselSlide.addEventListener('transitionend', () => {
+          if (carouselItems[counter].id === 'lastClone') {
+              carouselSlide.style.transition = "none";
+              counter = carouselItems.length - 2;
+              carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+          }
+          if (carouselItems[counter].id === 'firstClone') {
+              carouselSlide.style.transition = "none";
+              counter = carouselItems.length - counter;
+              carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+          }
+      });
+  </script>
+  </body>
+</html></body>
+          </html>
+        
